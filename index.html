@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="Sindre Sorhus">
+		<meta name="viewport" content="width=device-width">
+		<title>multi-download example</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<style>
+			#download-button,
+			#download-rename-button {
+        background-color: darkgreen;
+        border: none;
+        color: aliceblue;
+				height: 50px;
+				position: absolute;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				outline: none;
+			}
+
+			#download-button {
+				top: calc(50% - 50px);
+			}
+
+			#download-rename-button {
+				top: calc(50% + 50px);
+			}
+		</style>
+	</head>
+	<body >
+		<button id="download-button" class="btn btn-primary btn-lg" data-files="fixture/eagle.png fixture/ fixture/video1.mp4 fixture/tiger.png fixture/video2.mp4 fixture/file1.txt">Download multiple files</button>
+		
+		<script type="module">
+			import multiDownload from './index.js';
+
+			document.querySelector('#download-button').addEventListener('click', event => {
+				const files = event.target.dataset.files.split(' ');
+				multiDownload(files);
+			});
+
+			document.querySelector('#download-rename-button').addEventListener('click', event => {
+				const files = event.target.dataset.files.split(' ');
+
+				multiDownload(files, {
+					rename: ({url, index, urls}) => {
+						const extension = url.slice(url.lastIndexOf('.') + 1);
+						return `file${index}.${extension}`;
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
